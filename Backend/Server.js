@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/AuthRoutes");
+const authMiddleware = require("./middleware/AuthMiddleware");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,15 @@ connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
+
+
+app.get("/profile", authMiddleware, (req, res) => {
+     console.log(req.user,'user')
+  res.json({
+    success: true,
+    message: "Welcome to profile"
+  });
+});
 
 app.get("/", (req, res) => {
     res.send("Server Running...");
